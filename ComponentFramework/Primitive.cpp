@@ -27,6 +27,7 @@ Primitive::~Primitive()
 }
 
 bool Primitive::OnCreate() {
+	body = new Body(1, 0);
 	//New Shader Program
 	shader = new Shader("baseVert.glsl", "baseFrag.glsl", 3, 0, "vVertex", 1, "vNormal", 2, "texCoords");
 	//Get Shader program IDs 
@@ -57,6 +58,8 @@ void Primitive::OnDestroy() {
 
 void Primitive::Update(const float deltaTime) {
 	//Set the meshes position to current Pos
+	//Sets position to body's position
+	SetPos(body->pos);
 	modelMatrix = MMath::translate(pos.x, pos.y, pos.z);
 }
 
@@ -90,41 +93,6 @@ void Primitive::Render(const Matrix4& projectionMatrix, const Matrix4& viewMatri
 	}
 	// Disable the VAO
 	glEnableVertexAttribArray(0);
-}
-
-[[deprecated("Should not use incase of more than 1 mesh...")]]
-//Returns the center of the primitive
-Vec3 Primitive::GetCenter() {
-	Vec3 center;
-	for (Vec3 vertex : verticies) {
-		center += vertex;
-	}
-	return center / verticies.size();
-}
-
-[[deprecated("Should not use incase of more than 1 mesh...")]]
-//Get the farthest vector/vertex/point in the direction
-Vec3 Primitive::GetFathestPoint(const Vec3& direction) {
-	//if direction is +
-	if (direction > 0) {
-		//using a map to sort highest dot product
-		std::map<float, Vec3> dots;
-		for (Vec3 vertex : verticies) {
-			dots.emplace(VMath::dot(vertex, direction), vertex);
-		}
-		//returns the greatest dot product
-		return (--dots.end())->second;
-	}
-	//if direction is < 0
-	else {
-		//using map to sort dot products
-		std::map<float, Vec3> dots;
-		for (Vec3 vertex : verticies) {
-			dots.emplace(VMath::dot(vertex, direction), vertex);
-		}
-		//returns lowest dot product
-		return dots.begin()->second;
-	}
 }
 
 

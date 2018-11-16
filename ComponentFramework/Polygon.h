@@ -1,0 +1,18 @@
+#ifndef POLYGON_H
+#define POLYGON_H
+
+#include "Vector.h"
+#include <vector>
+
+using namespace MATH;
+struct Polygon {
+	Polygon() {}
+	Polygon(std::vector<Vec3> verticies_);
+	std::vector<Vec3> verticies;
+	virtual Vec3 GetBiggestPoint(const Vec3& direction);
+	virtual Vec3 GetSmallestPoint(const Vec3& direction);
+	virtual Vec3 GetCenter();
+};
+
+#endif // !POLYGON_H
+

@@ -5,9 +5,11 @@
 #include "Shader.h"
 #include "ObjLoader.h"
 #include "VMath.h"
+#include "Body.h"
+#include "Polygon.h"
 
 namespace GAME {
-	class Primitive: public Model{
+	class Primitive: public Model, public Polygon{
 	public:
 		//Constructor
 		Primitive(GLenum drawMode_, std::vector<Vec3> &vertices_, std::vector<Vec3> &normals_, std::vector<Vec2> &uvs);
@@ -27,14 +29,9 @@ namespace GAME {
 		virtual void Render(const Matrix4& projectionMatrix, const Matrix4& viewMatrix, const Matrix3& normalMatrix) const;
 		virtual void Render(const Matrix4& projectionMatrix, const Matrix4& viewMatrix, const Matrix3& normalMatrix, const Vec4& color) const;
 
-		//Custom Methods 
-		virtual std::vector<Vec3> GetVerticies() { return verticies; }
-		virtual Vec3 GetFathestPoint(const Vec3& direction);
-		virtual Vec3 GetCenter();
-
+		//Public Members
+		Body* body;
 	private:
-		//Contains the verticies of an obj
-		std::vector<Vec3> verticies;
 
 		Shader *shader;
 		GLuint vbo;

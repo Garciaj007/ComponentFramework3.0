@@ -1,4 +1,5 @@
 #pragma once 
+#include "Matrix.h"
 #include <string> /// Used for passing exceptions 
 		///
 		/// Vec3 definitions followed by Vec4 
@@ -102,7 +103,6 @@ namespace  MATH {
 		inline const Vec3  operator * ( const float s ) const { 
 			return Vec3(s*x, s*y, s*z ); 
 		}
-
 		
 		/// Multiply a scaler by a Vec3  - Ha! It's the scalar first then the Vec3
 		/// Overloaded and a friend, ouch! It's the only way to make it work with a scalar first.

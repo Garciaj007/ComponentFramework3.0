@@ -1,2 +1,107 @@
-﻿  Scene0.cpp
-  ComponentFramework.vcxproj -> C:\Development\C++\ComponentFramework3.0\Debug\ComponentFramework.exe
+﻿  Body.cpp
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ';' before '*'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C7524: 'inline' specifier cannot appear on a block-scope declaration or non-static data member
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ',' before '&'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(127): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(128): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(129): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(130): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(131): error C2064: term does not evaluate to a function taking 4 arguments
+  Collider.cpp
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ';' before '*'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C7524: 'inline' specifier cannot appear on a block-scope declaration or non-static data member
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ',' before '&'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(127): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(128): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(129): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(130): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(131): error C2064: term does not evaluate to a function taking 4 arguments
+c:\development\c++\componentframework3.0\componentframework\collider.cpp(72): error C2678: binary '*': no operator found which takes a left-hand operand of type 'MATH::Matrix4' (or there is no acceptable conversion)
+  c:\development\c++\componentframework3.0\componentframework\matrix.h(126): note: could be 'int MATH::Matrix4::operator *(const int) const'
+  c:\development\c++\componentframework3.0\componentframework\matrix.h(92): note: or       'const MATH::Matrix4 MATH::Matrix4::operator *(const MATH::Matrix4 &) const'
+  c:\development\c++\componentframework3.0\componentframework\vector.h(110): note: or       'MATH::Vec3 MATH::operator *(const float,const MATH::Vec3 &)' [found using argument-dependent lookup]
+  c:\development\c++\componentframework3.0\componentframework\vector.h(257): note: or       'MATH::Vec4 MATH::operator *(const float,const MATH::Vec4 &)' [found using argument-dependent lookup]
+  c:\development\c++\componentframework3.0\componentframework\collider.cpp(72): note: while trying to match the argument list '(MATH::Matrix4, MATH::Vec4)'
+c:\development\c++\componentframework3.0\componentframework\collider.cpp(76): error C2678: binary '*': no operator found which takes a left-hand operand of type 'MATH::Matrix4' (or there is no acceptable conversion)
+  c:\development\c++\componentframework3.0\componentframework\matrix.h(126): note: could be 'int MATH::Matrix4::operator *(const int) const'
+  c:\development\c++\componentframework3.0\componentframework\matrix.h(92): note: or       'const MATH::Matrix4 MATH::Matrix4::operator *(const MATH::Matrix4 &) const'
+  c:\development\c++\componentframework3.0\componentframework\vector.h(110): note: or       'MATH::Vec3 MATH::operator *(const float,const MATH::Vec3 &)' [found using argument-dependent lookup]
+  c:\development\c++\componentframework3.0\componentframework\vector.h(257): note: or       'MATH::Vec4 MATH::operator *(const float,const MATH::Vec4 &)' [found using argument-dependent lookup]
+  c:\development\c++\componentframework3.0\componentframework\collider.cpp(76): note: while trying to match the argument list '(MATH::Matrix4, MATH::Vec4)'
+c:\development\c++\componentframework3.0\componentframework\collider.cpp(161): error C2678: binary '*': no operator found which takes a left-hand operand of type 'MATH::Matrix4' (or there is no acceptable conversion)
+  c:\development\c++\componentframework3.0\componentframework\matrix.h(126): note: could be 'int MATH::Matrix4::operator *(const int) const'
+  c:\development\c++\componentframework3.0\componentframework\matrix.h(92): note: or       'const MATH::Matrix4 MATH::Matrix4::operator *(const MATH::Matrix4 &) const'
+  c:\development\c++\componentframework3.0\componentframework\vector.h(110): note: or       'MATH::Vec3 MATH::operator *(const float,const MATH::Vec3 &)' [found using argument-dependent lookup]
+  c:\development\c++\componentframework3.0\componentframework\vector.h(257): note: or       'MATH::Vec4 MATH::operator *(const float,const MATH::Vec4 &)' [found using argument-dependent lookup]
+  c:\development\c++\componentframework3.0\componentframework\collider.cpp(161): note: while trying to match the argument list '(MATH::Matrix4, MATH::Vec4)'
+c:\development\c++\componentframework3.0\componentframework\collider.cpp(162): error C2678: binary '*': no operator found which takes a left-hand operand of type 'MATH::Matrix4' (or there is no acceptable conversion)
+  c:\development\c++\componentframework3.0\componentframework\matrix.h(126): note: could be 'int MATH::Matrix4::operator *(const int) const'
+  c:\development\c++\componentframework3.0\componentframework\matrix.h(92): note: or       'const MATH::Matrix4 MATH::Matrix4::operator *(const MATH::Matrix4 &) const'
+  c:\development\c++\componentframework3.0\componentframework\vector.h(110): note: or       'MATH::Vec3 MATH::operator *(const float,const MATH::Vec3 &)' [found using argument-dependent lookup]
+  c:\development\c++\componentframework3.0\componentframework\vector.h(257): note: or       'MATH::Vec4 MATH::operator *(const float,const MATH::Vec4 &)' [found using argument-dependent lookup]
+  c:\development\c++\componentframework3.0\componentframework\collider.cpp(162): note: while trying to match the argument list '(MATH::Matrix4, MATH::Vec4)'
+  Debug.cpp
+  GameSceneManager.cpp
+  Mesh.cpp
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ';' before '*'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C7524: 'inline' specifier cannot appear on a block-scope declaration or non-static data member
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ',' before '&'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(127): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(128): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(129): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(130): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(131): error C2064: term does not evaluate to a function taking 4 arguments
+  Model0.cpp
+  Main.cpp
+  MMath.cpp
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ';' before '*'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C7524: 'inline' specifier cannot appear on a block-scope declaration or non-static data member
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ',' before '&'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(127): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(128): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(129): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(130): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(131): error C2064: term does not evaluate to a function taking 4 arguments
+  ObjLoader.cpp
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ';' before '*'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C7524: 'inline' specifier cannot appear on a block-scope declaration or non-static data member
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ',' before '&'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(127): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(128): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(129): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(130): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(131): error C2064: term does not evaluate to a function taking 4 arguments
+  Polygon.cpp
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ';' before '*'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C7524: 'inline' specifier cannot appear on a block-scope declaration or non-static data member
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ',' before '&'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(127): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(128): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(129): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(130): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(131): error C2064: term does not evaluate to a function taking 4 arguments
+c:\development\c++\componentframework3.0\componentframework\polygon.cpp(13): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
+  Primitive.cpp
+  Scene.cpp
+  Scene0.cpp
+  Shader.cpp
+  Timer.cpp
+  Trackball.cpp
+  VMath.cpp
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ';' before '*'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C7524: 'inline' specifier cannot appear on a block-scope declaration or non-static data member
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\development\c++\componentframework3.0\componentframework\matrix.h(126): error C2143: syntax error: missing ',' before '&'
+c:\development\c++\componentframework3.0\componentframework\matrix.h(127): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(128): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(129): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(130): error C2065: 'v': undeclared identifier
+c:\development\c++\componentframework3.0\componentframework\matrix.h(131): error C2064: term does not evaluate to a function taking 4 arguments
+  Window.cpp
+  Generating Code...
