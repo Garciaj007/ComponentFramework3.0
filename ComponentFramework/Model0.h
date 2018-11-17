@@ -13,7 +13,6 @@ class Model0 :public Model {
 public:
 	Model0();
 
-
 	Model0(const Model0&) = delete;
 	Model0(Model0&&) = delete;
 	Model0& operator = (const Model0&) = delete;

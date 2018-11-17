@@ -20,6 +20,10 @@ Body::Body(float mass_, Vec3 pos_, Vec3 vel_, Vec3 accel_) {
 	radius = 1.0f;
 }
 
+void Body::SetPosition(const Vec3& pos_) const {
+	pos = pos_;
+}
+
 /* Member Methods */
 
 //Updates Body

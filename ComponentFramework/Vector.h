@@ -1,5 +1,4 @@
 #pragma once 
-#include "Matrix.h"
 #include <string> /// Used for passing exceptions 
 		///
 		/// Vec3 definitions followed by Vec4 
@@ -146,6 +145,18 @@ namespace  MATH {
 
 		inline void print() { 
 			printf("%f %f %f\n", x,y,z);		  
+		}
+
+		inline bool operator == (const Vec3& v) const {
+			if (x == v.x && y == v.y && z == v.z)
+				return true;
+			return false;
+		}
+
+		inline bool operator != (const Vec3& v) const {
+			if (!(*this == v))
+				return true;
+			return false;
 		}
 
 		///

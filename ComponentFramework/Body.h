@@ -20,6 +20,8 @@ public:
 	void Update(const float deltaTime);
 	void ApplyForce(Vec3 force);
 	void ApplyTorque(float torque);
+
+	void SetPosition(const Vec3& pos) const;
 };
 
 #endif

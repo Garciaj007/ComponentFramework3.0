@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "ObjLoader.h"
 #include "Mesh.h"
+#include "MMath.h"
 
 using namespace GAME;
 
@@ -13,6 +14,7 @@ Model0::Model0():shader(nullptr) {
 bool Model0::OnCreate(){
 	
 	ObjLoader obj("skull.obj");
+	body = new Body(1, Vec3(0, 0, 0));
 	
 	meshes.push_back( new Mesh(GL_TRIANGLES, obj.vertices,obj.normals,obj.uvCoords));
 	
@@ -38,7 +40,7 @@ void Model0::OnDestroy(){
 }
 
 void Model0::Update(const float deltaTime){
-	
+	body->Update(deltaTime);
 }
 
 void Model0::SetLightPos(const Vec3& lightPos_){

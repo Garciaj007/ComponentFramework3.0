@@ -10,23 +10,23 @@ Vec3 Polygon::GetCenter() {
 	for (auto v : verticies) {
 		center += v;
 	}
-	return center / verticies.size();
+	return center / (float)verticies.size();
 }
 
 Vec3 Polygon::GetBiggestPoint(const Vec3& direction) {
-	Vec3 point;
-	for (auto vertex : verticies) {
-		if (VMath::dot(vertex, direction) > VMath::dot(point, direction))
-			point = vertex;
+	Vec3 point = verticies[0];
+	for (auto v : verticies) {
+		if (VMath::dot(v, direction) > VMath::dot(point, direction))
+			point = v;
 	}
 	return point;
 }
 
 Vec3 Polygon::GetSmallestPoint(const Vec3& direction) {
-	Vec3 point;
-	for (auto vertex : verticies) {
-		if (VMath::dot(vertex, direction) < VMath::dot(point, direction))
-			point = vertex;
+	Vec3 point = verticies[0];
+	for (auto v : verticies) {
+		if (VMath::dot(v, direction) < VMath::dot(point, direction))
+			point = v;
 	}
 	return point;
 }

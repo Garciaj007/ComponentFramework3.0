@@ -32,8 +32,11 @@ bool Scene0::OnCreate() {
 	color2 = Vec4(1.0f, 0.0f, 1.0f, 1.0f);
 	prim1 = new Primitive("triangle1.obj");
 	prim2 = new Primitive("triangle2.obj");
-	prim1->SetPos(Vec3(-2.0f, -2.0f, 0.0f));
-	prim2->SetPos(Vec3(-2.0f, -2.0f, 0.0f));
+
+	/*prim2->body->ApplyForce(Vec3(1, 1, 0));*/
+	/*prim1->body->SetPosition(Vec3(-2, -2, 0));
+	prim2->body->SetPosition(Vec3(-2, -2, 0));*/
+	
 	return true;
 }
 

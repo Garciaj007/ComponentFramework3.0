@@ -1,4 +1,5 @@
 #include "Primitive.h"
+#include "MMath.h"
 #include <map>
 
 using namespace GAME;
@@ -27,7 +28,7 @@ Primitive::~Primitive()
 }
 
 bool Primitive::OnCreate() {
-	body = new Body(1, 0);
+	body = new Body(1, -GetCenter());
 	//New Shader Program
 	shader = new Shader("baseVert.glsl", "baseFrag.glsl", 3, 0, "vVertex", 1, "vNormal", 2, "texCoords");
 	//Get Shader program IDs 
@@ -59,8 +60,8 @@ void Primitive::OnDestroy() {
 void Primitive::Update(const float deltaTime) {
 	//Set the meshes position to current Pos
 	//Sets position to body's position
-	SetPos(body->pos);
-	modelMatrix = MMath::translate(pos.x, pos.y, pos.z);
+	body->Update(deltaTime);
+	modelMatrix = MMath::translate(body->pos.x, body->pos.y, body->pos.z);
 }
 
 void Primitive::Render(const Matrix4& projectionMatrix, const Matrix4& viewMatrix, const Matrix3& normalMatrix) const {

@@ -1,7 +1,8 @@
 #include "Collider.h"
 #include "VMath.h"
-#include "MMath.h"
 #include <iostream>
+
+std::map<float, std::pair<Vec3, Vec3>> Collider::originalpoints = std::map<float, std::pair<Vec3, Vec3>>();
 
 //Check for Collisions
 bool Collider::Collided(Polygon* p1, Polygon* p2) {
@@ -17,7 +18,7 @@ bool Collider::Collided(Polygon* p1, Polygon* p2) {
 	simplex.B = Support(p1, p2, -direction);
 
 	//Form a line
-	Vec3 line = simplex.B - simplex.A;
+	Vec3 line = simplex.A - simplex.B;
 
 	//Normal of line AB
 	Vec3 n1(-line.y, line.x, line.z);
@@ -37,9 +38,11 @@ bool Collider::Collided(Polygon* p1, Polygon* p2) {
 
 	//Check if the simplex contains the origin
 	if (simplex.ContainsOrigin(p1, p2)) {
+		std::cout << "Polygons have collided..." << std::endl;
 		return true;
 	}
 	else {
+		std::cout << "Polygons have NOT collided..." << std::endl;
 		return false;
 	}
 }
@@ -48,37 +51,28 @@ bool Collider::Collided(Polygon* p1, Polygon* p2) {
 void Collider::HandleCollision(Polygon* p1, Polygon* p2) {
 	float scale = 1.0f; //The scaling factor
 
-	Matrix4 scaled1, scaled2;//TST outcomes
+	Mat3 scaled1, scaled2;//TST outcomes
+
+	Vec3 M1, M2;//Points that form the closest line
 
 	//Temporary Polygons, which are the scaled outcomes scaled and translated by the TST
 	Polygon* shape1 = new Polygon();
 	Polygon* shape2 = new Polygon();
 
-	//A loop to determine if there is still a collision and scale acordingly 
-	while (Collided(shape1, shape2)) {
-		scale -= 0.5f; //Reduce scale by 5%
+	//Performing TST returns a Mat3
+	scaled1 = TST(p1, 0.75f);
+	scaled2 = TST(p2, 0.75f);
 
-		//Clearing all vertices if there are any
-		shape1->verticies.clear();
-		shape2->verticies.clear();
-
-		//Performing TST returns a Mat4
-		scaled1 = TST(p1, scale);
-		scaled2 = TST(p2, scale);
-
-		//Pushing Matricies into polygons
-		for (auto v : p1->verticies) {
-			Vec4 v4(v);
-			shape1->verticies.push_back(Vec3(scaled1 * v4));
-		}
-		for (auto v : p2->verticies) {
-			Vec4 v4(v);
-			shape2->verticies.push_back(Vec3(scaled2 * v4));
-		}
+	//Pushing Matricies into polygons
+	for (auto v : p1->verticies) {
+		shape1->verticies.push_back(scaled1 * v);
+	}
+	for (auto v : p2->verticies) {
+		shape2->verticies.push_back(scaled2 * v);
 	}
 
 	//Clearing all vertices from support functions before
-	originalpoints.clear(); 
+	originalpoints.clear();
 
 	//Retrieving initial direction 
 	Vec3 direction = shape2->GetCenter() - shape1->GetCenter();
@@ -96,22 +90,26 @@ void Collider::HandleCollision(Polygon* p1, Polygon* p2) {
 	float t = VMath::dot(-A, AB) / VMath::dot(AB, AB);
 
 	//Finding the point on AB closest to origin
-	Vec3 Q1 = A + (B * t);
+	Vec3 Q1 = A + AB * t;
 
 	//Finding 3rd Point using support function
 	Vec3 C = Support(shape1, shape2, -Q1);
 
-	//Finding line BC
-	Vec3 BC = C - B;
-
 	//Finding line AC
 	Vec3 AC = C - A;
 
+	t = VMath::dot(-A, AC) / VMath::dot(AC, AC);
+
 	//Finding the point on AC closest to the origin
-	Vec3 Q2 = A + ((VMath::dot(-A, AC) / VMath::dot(AC, AC)) * AC);
+	Vec3 Q2 = A + AC * t;
+
+	//Finding line BC
+	Vec3 BC = C - B;
+
+	t = VMath::dot(-B, BC) / VMath::dot(BC, BC);
 
 	//Finding the point on BC closest to the origin
-	Vec3 Q3 = B + ((VMath::dot(-B, BC) / VMath::dot(BC, BC)) * BC);
+	Vec3 Q3 = B + BC * t;
 
 	//Magnitude of closest points 
 	float Q1Mag = VMath::mag(Q1);
@@ -120,74 +118,86 @@ void Collider::HandleCollision(Polygon* p1, Polygon* p2) {
 
 	//Finding if there is another point closer to the origin
 	if (Q1Mag < Q2Mag && Q1Mag < Q3Mag) {
-		A = Support(shape1, shape2, -Q1);
+		M1 = A;
+		M2 = B;
 	}
 
 	//Finding if there is another point closer to the origin
 	if (Q2Mag < Q1Mag && Q2Mag < Q3Mag) {
-		B = Support(shape1, shape2, -Q2);
+		M1 = A;
+		M2 = C;
 	}
 
 	//Finding if there is another point closer to the origin
 	if (Q3Mag < Q1Mag && Q3Mag < Q2Mag) {
-		C = Support(shape1, shape2, -Q3);
+		M1 = B;
+		M2 = C;
 	}
 
 	//Finding L 
-	Vec3 L = B - A;
+	Vec3 L = M2 - M1;
 
 	//Finding Lambda 1 using M2 . L / L . L
-	float lambda1 = VMath::dot(B, L) / VMath::dot(L, L);
+	float lambda1 = VMath::dot(M2, L) / VMath::dot(L, L);
 
 	//Finding Lambda 2 using 1 - lambda1
 	float lambda2 = 1 - lambda1;
 
-	//Finding A Closest using Lambda1 * A1 + Lambda2 * A2
-	Vec3 AClosest = lambda1 * originalpoints[A].first + lambda2 * originalpoints[B].first;
+	Vec3 AClosest, BClosest;
 
-	//Finding B Closest using Lambda1 * B1 + Lambda2 * B2
-	Vec3 BClosest = lambda1 * originalpoints[A].second + lambda2 * originalpoints[B].second;
+	auto itA = originalpoints.find(VMath::mag(A));
+	auto itB = originalpoints.find(VMath::mag(B));
+
+	if (itA != originalpoints.end() && itB != originalpoints.end()) {
+		//Finding A Closest using Lambda1 * A1 + Lambda2 * A2
+		AClosest = lambda1 * itA->second.first + lambda2 * itB->second.first;
+
+		//Finding B Closest using Lambda1 * B1 + Lambda2 * B2
+		BClosest = lambda1 * itA->second.second + lambda2 * itB->second.second;
+	}
 
 	//Finding Contact Normal
-	Vec3 contactNormal = (BClosest - AClosest) / (VMath::mag(BClosest - AClosest));
+	Vec3 contactNormal = (BClosest - AClosest) / VMath::mag(BClosest - AClosest);
 
-	std::cout << "Contact Normal : " << contactNormal << std::endl;
-
-	//Converting to vector4 for matrix multiplication
-	Vec4 Ac4(AClosest);
-	Vec4 Bc4(BClosest);
+	std::cout << "Contact Normal : ";
+	contactNormal.print();
 
 	//Finding the Contact Points on Original Shape using inverse of TST * Closest Point
-	Vec3 AclosestOriginal = MMath::inverse(scaled1) * Ac4;
-	Vec3 BclosestOriginal = MMath::inverse(scaled2) * Bc4;
+	Vec3 AClosestOriginal = Mat3::Inverse(scaled1) * AClosest;
+	Vec3 BClosestOriginal = Mat3::Inverse(scaled2) * BClosest;
 
-	std::cout << "Closest point on A : " << AclosestOriginal << std::endl;
-	std::cout << "Closest point on B : " << BclosestOriginal << std::endl;
+	std::cout << "Closest point on A : ";
+	AClosestOriginal.print();
+
+	std::cout << "Closest point on B : ";
+	BClosestOriginal.print();
+
+	std::cout << std::endl;
 }
 
 //Get a point on the simplex
-Vec3 Collider::Support(Polygon* p1, Polygon* p2,const Vec3& direction) {
+Vec3 Collider::Support(Polygon* p1, Polygon* p2, const Vec3& direction) {
 	//Get the farthest point in the direction
 	Vec3 point1 = p1->GetBiggestPoint(direction);
 	Vec3 point2 = p2->GetSmallestPoint(direction);
 
 	//Minkowski Sum
-	Vec3 sum = point1 - point2;
+	Vec3 sum = Vec3(point1 - point2);
 
 	//emplacing into map for future use
-	originalpoints.emplace(sum, std::make_pair(point1, point2));
+	originalpoints.emplace(VMath::mag(sum), std::make_pair(point1, point2));
 
 	//returning sum
 	return sum;
 }
 
 //Performs the translation to centre, scaling, and translation to origin
-Matrix4 Collider::TST(Polygon* p, const float scaleFactor) {
-	Matrix4 translate(MMath::translate(p->GetCenter().x, p->GetCenter().y, 1));
-	Matrix4 scale(MMath::scale(scaleFactor, scaleFactor, 1));
-	Matrix4 origin(MMath::translate(-p->GetCenter().x, -p->GetCenter().y, 1));
+Mat3 Collider::TST(Polygon* p, const float scaleFactor) {
+	Mat3 translate(Mat3::Translate(p->GetCenter().x, p->GetCenter().y, 1));
+	Mat3 scale(Mat3::Scale(scaleFactor, scaleFactor, 1));
+	Mat3 origin(Mat3::Translate(-p->GetCenter().x, -p->GetCenter().y, 1));
 
-	return Matrix4(translate * scale * origin);
+	return Mat3(translate * scale * origin);
 }
 
 //------------------------------------------------------------- Simplex ---------------------------------------------------------------//
@@ -201,31 +211,31 @@ bool Simplex::ContainsOrigin(Polygon* p1, Polygon* p2) {
 	Vec3 AC = C - A;
 
 	//find a vector perpendicular to AB
-	Vec3 ABPerp = VMath::cross(VMath::cross(AB, AC),AB);
-	
+	Vec3 ABPerp = (AC * VMath::dot(AB, AB)) - (AB * VMath::dot(AB, AC));
+
 	//if ABPerp . AO < 0 collision has not occurred
 	if (VMath::dot(ABPerp, -A) < 0)
 		return false;
 
 	//find a vector perpendicular to AC
-	Vec3 ACPerp = VMath::cross(VMath::cross(AC, AB), AC);
+	Vec3 ACPerp = (AB * VMath::dot(AC, AC)) - (AC * VMath::dot(AC, AB));
 
 	//if ACPerp . AO < 0 collision has not occurred
-	if (VMath::dot(ACPerp, -B) < 0)
+	if (VMath::dot(ACPerp, -A) < 0)
 		return false;
 
 	//find a vector perpendicular to BC
-	Vec3 BCPerp = VMath::cross(VMath::cross(BC, BA), BC);
+	Vec3 BCPerp = (BA * VMath::dot(BC, BC)) - (BC * VMath::dot(BC, BA));
 
 	//if BCPerp . BO < 0 collision has not occurred
-	if (VMath::dot(BCPerp, -A) < 0) {
+	if (VMath::dot(BCPerp, -B) < 0) {
 		//Searching along BCPerp to find another point
 		Vec3 Atemp = Collider::Support(p1, p2, -BCPerp);
-		
+
 		//if A != A, Check again if positive, else collision has not occured
-		if (Atemp != A && VMath::dot(BCPerp, -A) >= 0)
+		if (Atemp != A && VMath::dot(BCPerp, -Atemp) >= 0)
 			A = Atemp;
-		else 
+		else
 			return false;
 	}
 

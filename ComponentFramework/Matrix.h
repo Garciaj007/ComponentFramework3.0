@@ -1,11 +1,11 @@
 #ifndef MATRIX_H
 #define MATRIX_H
-#include <stdio.h>	  
+#include <stdio.h>	/// Needed for the printf statement, could have used cin and cout but I have issues.  
 #include "Vector.h"
 
 namespace  MATH {
 	/// These are the default vectors of the eye (camera) according to OpenGL and the right hand rule
-	///								+Y	 -Z
+	///								+Y   -Z
 	///	                             |  /
 	///   origin(0.0f,0.0f,0.0f);    | /
 	///   up(0.0f,1.0f,0.0f);        |/_____+X
@@ -60,7 +60,7 @@ namespace  MATH {
 			m[0] = x0;   m[4] = y0;   m[8] = z0; m[12] = w0;
 			m[1] = x1;   m[5] = y1;   m[9] = z1; m[13] = w1;
 			m[2] = x2;   m[6] = y2;   m[10] = z2; m[14] = w2;
-			m[3] = x3;	 m[7] = y3;   m[11] = z3; m[15] = w3;
+			m[3] = x3;   m[7] = y3;   m[11] = z3; m[15] = w3;
 		}
 
 		/// Create the unit matrix probably the most common way of initializing a matrix
@@ -72,7 +72,7 @@ namespace  MATH {
 				m[0] = d;   m[4] = d;   m[8] = d;   m[12] = d;
 				m[1] = d;   m[5] = d;   m[9] = d;   m[13] = d;
 				m[2] = d;   m[6] = d;   m[10] = d;   m[14] = d;
-				m[3] = d;	 m[7] = d;   m[11] = d;	  m[15] = d;
+				m[3] = d;   m[7] = d;   m[11] = d;   m[15] = d;
 			}
 		}
 
@@ -87,34 +87,38 @@ namespace  MATH {
 
 
 
+
 		/// Multiply two 4x4 matricies. 
 		/// Grrr, I never liked mulipling maticies - but it needs to be done. 
-		inline const Matrix4 operator*(const Matrix4& n) const {
-			///Matrix c; /// This is how I did it in 1980
-			///for(int i=0;i<4;i++) {
-			///		for(int j=0;j<4;j++) {
-			///			c[i*4+j] = (m[i*4+0] * n[0*4+j]) + (m[i*4+1] * n[1*4+j]) + (m[i*4+2] * n[2*4+j]) + (m[i*4+3] * n[3*4+j]);	
-			///		}
-			///}
-			/// This approach is about 8 nanoseconds faster, not because I unrolled the loops but because of the constructor, ask me. 
-			return Matrix4(m[0 * 4 + 0] * n[0 * 4 + 0] + m[0 * 4 + 1] * n[1 * 4 + 0] + m[0 * 4 + 2] * n[2 * 4 + 0] + m[0 * 4 + 3] * n[3 * 4 + 0],
-				m[0 * 4 + 0] * n[0 * 4 + 1] + m[0 * 4 + 1] * n[1 * 4 + 1] + m[0 * 4 + 2] * n[2 * 4 + 1] + m[0 * 4 + 3] * n[3 * 4 + 1],
-				m[0 * 4 + 0] * n[0 * 4 + 2] + m[0 * 4 + 1] * n[1 * 4 + 2] + m[0 * 4 + 2] * n[2 * 4 + 2] + m[0 * 4 + 3] * n[3 * 4 + 2],
-				m[0 * 4 + 0] * n[0 * 4 + 3] + m[0 * 4 + 1] * n[1 * 4 + 3] + m[0 * 4 + 2] * n[2 * 4 + 3] + m[0 * 4 + 3] * n[3 * 4 + 3],
-				m[1 * 4 + 0] * n[0 * 4 + 0] + m[1 * 4 + 1] * n[1 * 4 + 0] + m[1 * 4 + 2] * n[2 * 4 + 0] + m[1 * 4 + 3] * n[3 * 4 + 0],
-				m[1 * 4 + 0] * n[0 * 4 + 1] + m[1 * 4 + 1] * n[1 * 4 + 1] + m[1 * 4 + 2] * n[2 * 4 + 1] + m[1 * 4 + 3] * n[3 * 4 + 1],
-				m[1 * 4 + 0] * n[0 * 4 + 2] + m[1 * 4 + 1] * n[1 * 4 + 2] + m[1 * 4 + 2] * n[2 * 4 + 2] + m[1 * 4 + 3] * n[3 * 4 + 2],
-				m[1 * 4 + 0] * n[0 * 4 + 3] + m[1 * 4 + 1] * n[1 * 4 + 3] + m[1 * 4 + 2] * n[2 * 4 + 3] + m[1 * 4 + 3] * n[3 * 4 + 3],
-				m[2 * 4 + 0] * n[0 * 4 + 0] + m[2 * 4 + 1] * n[1 * 4 + 0] + m[2 * 4 + 2] * n[2 * 4 + 0] + m[2 * 4 + 3] * n[3 * 4 + 0],
-				m[2 * 4 + 0] * n[0 * 4 + 1] + m[2 * 4 + 1] * n[1 * 4 + 1] + m[2 * 4 + 2] * n[2 * 4 + 1] + m[2 * 4 + 3] * n[3 * 4 + 1],
-				m[2 * 4 + 0] * n[0 * 4 + 2] + m[2 * 4 + 1] * n[1 * 4 + 2] + m[2 * 4 + 2] * n[2 * 4 + 2] + m[2 * 4 + 3] * n[3 * 4 + 2],
-				m[2 * 4 + 0] * n[0 * 4 + 3] + m[2 * 4 + 1] * n[1 * 4 + 3] + m[2 * 4 + 2] * n[2 * 4 + 3] + m[2 * 4 + 3] * n[3 * 4 + 3],
-				m[3 * 4 + 0] * n[0 * 4 + 0] + m[3 * 4 + 1] * n[1 * 4 + 0] + m[3 * 4 + 2] * n[2 * 4 + 0] + m[3 * 4 + 3] * n[3 * 4 + 0],
-				m[3 * 4 + 0] * n[0 * 4 + 1] + m[3 * 4 + 1] * n[1 * 4 + 1] + m[3 * 4 + 2] * n[2 * 4 + 1] + m[3 * 4 + 3] * n[3 * 4 + 1],
-				m[3 * 4 + 0] * n[0 * 4 + 2] + m[3 * 4 + 1] * n[1 * 4 + 2] + m[3 * 4 + 2] * n[2 * 4 + 2] + m[3 * 4 + 3] * n[3 * 4 + 2],
-				m[3 * 4 + 0] * n[0 * 4 + 3] + m[3 * 4 + 1] * n[1 * 4 + 3] + m[3 * 4 + 2] * n[2 * 4 + 3] + m[3 * 4 + 3] * n[3 * 4 + 3]);
+		/// Repaired 3/7/2017 SSF
 
+		inline const Matrix4 operator*(const Matrix4& n) const {
+			/*Matrix4 result;
+			for (int i = 0; i < 4; ++i) {
+				for (int j = 0; j < 4; ++j) {
+						result[i*4+j] = (m[0*4+j] * n[i*4 +0]) + (m[1*4+j] * n[i*4+1]) + (m[2*4+j] * n[i*4+2]) + (m[3*4+j] * n[i*4+3]);
+				}
+			}*/
+			/// This approach is about 8 nanoseconds faster, not because I unrolled the loops but because of the constructor, ask me. 
+			return Matrix4(
+				(m[0 * 4 + 0] * n[0 * 4 + 0]) + (m[1 * 4 + 0] * n[0 * 4 + 1]) + (m[2 * 4 + 0] * n[0 * 4 + 2]) + (m[3 * 4 + 0] * n[0 * 4 + 3]),
+				(m[0 * 4 + 1] * n[0 * 4 + 0]) + (m[1 * 4 + 1] * n[0 * 4 + 1]) + (m[2 * 4 + 1] * n[0 * 4 + 2]) + (m[3 * 4 + 1] * n[0 * 4 + 3]),
+				(m[0 * 4 + 2] * n[0 * 4 + 0]) + (m[1 * 4 + 2] * n[0 * 4 + 1]) + (m[2 * 4 + 2] * n[0 * 4 + 2]) + (m[3 * 4 + 2] * n[0 * 4 + 3]),
+				(m[0 * 4 + 3] * n[0 * 4 + 0]) + (m[1 * 4 + 3] * n[0 * 4 + 1]) + (m[2 * 4 + 3] * n[0 * 4 + 2]) + (m[3 * 4 + 3] * n[0 * 4 + 3]),
+				(m[0 * 4 + 0] * n[1 * 4 + 0]) + (m[1 * 4 + 0] * n[1 * 4 + 1]) + (m[2 * 4 + 0] * n[1 * 4 + 2]) + (m[3 * 4 + 0] * n[1 * 4 + 3]),
+				(m[0 * 4 + 1] * n[1 * 4 + 0]) + (m[1 * 4 + 1] * n[1 * 4 + 1]) + (m[2 * 4 + 1] * n[1 * 4 + 2]) + (m[3 * 4 + 1] * n[1 * 4 + 3]),
+				(m[0 * 4 + 2] * n[1 * 4 + 0]) + (m[1 * 4 + 2] * n[1 * 4 + 1]) + (m[2 * 4 + 2] * n[1 * 4 + 2]) + (m[3 * 4 + 2] * n[1 * 4 + 3]),
+				(m[0 * 4 + 3] * n[1 * 4 + 0]) + (m[1 * 4 + 3] * n[1 * 4 + 1]) + (m[2 * 4 + 3] * n[1 * 4 + 2]) + (m[3 * 4 + 3] * n[1 * 4 + 3]),
+				(m[0 * 4 + 0] * n[2 * 4 + 0]) + (m[1 * 4 + 0] * n[2 * 4 + 1]) + (m[2 * 4 + 0] * n[2 * 4 + 2]) + (m[3 * 4 + 0] * n[2 * 4 + 3]),
+				(m[0 * 4 + 1] * n[2 * 4 + 0]) + (m[1 * 4 + 1] * n[2 * 4 + 1]) + (m[2 * 4 + 1] * n[2 * 4 + 2]) + (m[3 * 4 + 1] * n[2 * 4 + 3]),
+				(m[0 * 4 + 2] * n[2 * 4 + 0]) + (m[1 * 4 + 2] * n[2 * 4 + 1]) + (m[2 * 4 + 2] * n[2 * 4 + 2]) + (m[3 * 4 + 2] * n[2 * 4 + 3]),
+				(m[0 * 4 + 3] * n[2 * 4 + 0]) + (m[1 * 4 + 3] * n[2 * 4 + 1]) + (m[2 * 4 + 3] * n[2 * 4 + 2]) + (m[3 * 4 + 3] * n[2 * 4 + 3]),
+				(m[0 * 4 + 0] * n[3 * 4 + 0]) + (m[1 * 4 + 0] * n[3 * 4 + 1]) + (m[2 * 4 + 0] * n[3 * 4 + 2]) + (m[3 * 4 + 0] * n[3 * 4 + 3]),
+				(m[0 * 4 + 1] * n[3 * 4 + 0]) + (m[1 * 4 + 1] * n[3 * 4 + 1]) + (m[2 * 4 + 1] * n[3 * 4 + 2]) + (m[3 * 4 + 1] * n[3 * 4 + 3]),
+				(m[0 * 4 + 2] * n[3 * 4 + 0]) + (m[1 * 4 + 2] * n[3 * 4 + 1]) + (m[2 * 4 + 2] * n[3 * 4 + 2]) + (m[3 * 4 + 2] * n[3 * 4 + 3]),
+				(m[0 * 4 + 3] * n[3 * 4 + 0]) + (m[1 * 4 + 3] * n[3 * 4 + 1]) + (m[2 * 4 + 3] * n[3 * 4 + 2]) + (m[3 * 4 + 3] * n[3 * 4 + 3]));
 		}
+
 		/// Multipling a matrix by itself is probably the most commom
 		/// ("this" is the address of the matrix. "*this" de-references that address
 		inline Matrix4& operator*=(const Matrix4& n) {
@@ -123,7 +127,7 @@ namespace  MATH {
 		}
 
 		/// Multiply a Vec4 by this matrix and return the resulting vector
-		inline Vec4 operator* (const Vec4& v) const {
+		inline  Vec4 operator* (const Vec4& v) const {
 			float x = v.x * m[0] + v.y * m[4] + v.z * m[8] + v.w * m[12];
 			float y = v.x * m[1] + v.y * m[5] + v.z * m[9] + v.w * m[13];
 			float z = v.x * m[2] + v.y * m[6] + v.z * m[10] + v.w * m[14];
@@ -131,6 +135,13 @@ namespace  MATH {
 			return Vec4(x, y, z, w);
 		}
 
+		inline  Vec3 operator* (const Vec3& v) const {
+			float x = v.x * m[0] + v.y * m[4] + v.z * m[8] + 1.0f * m[12];
+			float y = v.x * m[1] + v.y * m[5] + v.z * m[9] + 1.0f * m[13];
+			float z = v.x * m[2] + v.y * m[6] + v.z * m[10] + 1.0f * m[14];
+			float w = v.x * m[3] + v.y * m[7] + v.z * m[11] + 1.0f * m[15];
+			return Vec3(x, y, z);
+		}
 
 		inline void print() const { /// Print them in column form (right-hand rule)
 			printf("%1.8f %1.8f %1.8f %1.8f\n%1.8f %1.8f %1.8f %1.8f\n%1.8f %1.8f %1.8f %1.8f\n%1.8f %1.8f %1.8f %1.8f\n\n",
@@ -143,8 +154,10 @@ namespace  MATH {
 		/// These allow me convert from type Matrix to const float * without issues
 		inline operator float* () { return static_cast<float*>(&m[0]); }
 		inline operator const float* () const { return static_cast<const float*>(&m[0]); }
-
 	};
+
+
+
 
 
 	class Matrix3 {
@@ -172,12 +185,31 @@ namespace  MATH {
 			return *(m + index);
 		}
 
-		inline  Matrix3& operator = (const Matrix3 &m_) {
+		inline Matrix3& operator = (const Matrix3 &m_) {
 			this->m[0] = m_[0]; this->m[1] = m_[1]; this->m[2] = m_[2];
 			this->m[3] = m_[3]; this->m[4] = m_[4]; this->m[5] = m_[5];
 			this->m[6] = m_[6]; this->m[7] = m_[7]; this->m[8] = m_[8];
 			return *this;
 		}
+
+
+		/// Multiply two 3x3 matricies. 
+		inline const Matrix3 operator*(const Matrix3& n) const {
+			Matrix3 result;
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					result[i * 3 + j] = (m[0 * 3 + j] * n[i * 3 + 0]) + (m[1 * 3 + j] * n[i * 3 + 1]) + (m[2 * 3 + j] * n[i * 3 + 2]);
+				}
+			}
+			return result;
+		}
+
+		inline Matrix3& operator*=(const Matrix3& n) {
+			*this = *this * n;
+			return *this;
+		}
+
+
 		/// Extracts the inner 3x3 from a 4x4 matrix
 		/// using the assignment operator
 		inline Matrix3& operator = (const Matrix4 &m_) {
@@ -187,7 +219,7 @@ namespace  MATH {
 			return *this;
 		}
 
-		/// Copy constructor from a 4x4 matrix
+		/// 
 		inline Matrix3(const Matrix4 &m_) {
 			this->m[0] = m_[0]; this->m[1] = m_[1]; this->m[2] = m_[2];
 			this->m[3] = m_[4]; this->m[4] = m_[5]; this->m[5] = m_[6];
@@ -229,7 +261,6 @@ namespace  MATH {
 		}
 
 
-
 		inline void print() const { /// Print them in column form (right-hand rule)
 			printf("%1.8f %1.8f %1.8f\n%1.8f %1.8f %1.8f\n%1.8f %1.8f %1.8f\n\n",
 				m[0], m[3], m[6],
@@ -240,7 +271,10 @@ namespace  MATH {
 		/// These allow me convert from type Matrix to const float * without issues
 		inline operator float* () { return static_cast<float*>(&m[0]); }
 		inline operator const float* () const { return static_cast<const float*>(&m[0]); }
+
 	};
 
+
 }
+
 #endif

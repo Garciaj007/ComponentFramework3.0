@@ -28,9 +28,6 @@ namespace GAME {
 		virtual void Update(const float deltaTime);
 		virtual void Render(const Matrix4& projectionMatrix, const Matrix4& viewMatrix, const Matrix3& normalMatrix) const;
 		virtual void Render(const Matrix4& projectionMatrix, const Matrix4& viewMatrix, const Matrix3& normalMatrix, const Vec4& color) const;
-
-		//Public Members
-		Body* body;
 	private:
 
 		Shader *shader;
