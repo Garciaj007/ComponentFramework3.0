@@ -1,4 +1,5 @@
 #include "Body.h"
+#include <iostream>
 
 /* Constructors */
 
@@ -17,7 +18,14 @@ Body::Body(float mass_, Vec3 pos_, Vec3 vel_, Vec3 accel_) {
 	pos = pos_;
 	vel = vel_;
 	accel = accel_;
-	radius = 1.0f;
+}
+
+Body::Body(float mass_, float rotationalInertia_, Vec3 pos_, Vec3 vel_, Vec3 accel_) {
+	mass = mass_;
+	rotationalInertia = rotationalInertia_;
+	pos = pos_;
+	vel = vel_;
+	accel = accel_;
 }
 
 void Body::SetPosition(const Vec3& pos_) const {
@@ -79,6 +87,11 @@ void Body::Update(const float deltaTime) {
 	}
 }
 
+void Body::ApplyImpulse(float impulse, Vec3 contactNormal, Vec3 length) {
+	vel += (impulse * contactNormal) / mass;
+	angularVel += Vec3(VMath::cross(length, impulse * contactNormal)).z / rotationalInertia;
+}
+
 //Sets Force
 void Body::ApplyForce(Vec3 force) {
 	forceApplied = force;
@@ -87,4 +100,11 @@ void Body::ApplyForce(Vec3 force) {
 //Applies Torque (Sets Angular Accel)
 void Body::ApplyTorque(float torque) {
 	angularAccel = torque / rotationalInertia;
+}
+
+void Body::Print() {
+	pos.print();
+	vel.print();
+	accel.print();
+	std::cout << angularVel << std::endl;
 }

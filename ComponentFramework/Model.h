@@ -19,8 +19,8 @@ protected:
 	Scene* parentScene;
 	std::vector<Mesh*> meshes;
 public:
-	Model(){};
-	virtual ~Model() { };
+	Model(){ }
+	virtual ~Model() { }
 
 	Model(const Model&) = delete;
 	Model(Model&&) = delete;
@@ -33,9 +33,6 @@ public:
 	virtual void OnDestroy() = 0;
 	virtual void Render(const Matrix4& projectionMatrix, const Matrix4& modelViewMatrix, const Matrix3& normalMatrix)const = 0;
 };
-
-
-
 
 } /// end of namespace
 

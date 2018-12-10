@@ -6,7 +6,7 @@
 
 using namespace MATH;
 struct Polygon {
-	Polygon() {}
+	Polygon() { verticies.clear(); }
 	Polygon(std::vector<Vec3> verticies_);
 	std::vector<Vec3> verticies;
 	virtual Vec3 GetBiggestPoint(const Vec3& direction);

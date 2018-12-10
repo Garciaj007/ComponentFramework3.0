@@ -4,8 +4,14 @@
 
 std::map<float, std::pair<Vec3, Vec3>> Collider::originalpoints = std::map<float, std::pair<Vec3, Vec3>>();
 
+float Collider::Epsilon;
+
+Vec3 Collider::AClosest;
+Vec3 Collider::BClosest;
+Vec3 Collider::contactNormal;
+
 //Check for Collisions
-bool Collider::Collided(Polygon* p1, Polygon* p2) {
+bool Collider::Collided(Primitive* p1, Primitive* p2) {
 	//Get initial direction from shapes centers
 	Vec3 direction = p2->GetCenter() - p1->GetCenter();
 	//Simplex object
@@ -48,9 +54,33 @@ bool Collider::Collided(Polygon* p1, Polygon* p2) {
 }
 
 //Handles Collision
-void Collider::HandleCollision(Polygon* p1, Polygon* p2) {
-	float scale = 1.0f; //The scaling factor
+void Collider::HandleCollision(Primitive* p1, Primitive* p2) {
+	
+	if (p1->body == nullptr || p2->body == nullptr) {
+		return;
+	}
 
+	CalculateContactNormals(p1, p2);
+	CalculateImpulse(p1, p2);
+}
+
+void Collider::CalculateImpulse(Primitive* p1, Primitive* p2) {
+	//Finding the Length of collision
+	Vec3 r1 = AClosest - p1->GetCenter();
+	Vec3 r2 = BClosest - p2->GetCenter();
+
+	//Calculating Impulse
+	float impulse = (-(VMath::dot(contactNormal, p1->body->vel - p2->body->vel)) * (Epsilon + 1)) / 
+		((1 / p1->body->mass) + (1 / p2->body->mass) + 
+			VMath::dot(contactNormal, VMath::cross(VMath::cross(r1, contactNormal) / p1->body->rotationalInertia, r1)) + 
+			VMath::dot(contactNormal, VMath::cross(VMath::cross(r2, contactNormal) / p2->body->rotationalInertia, r2)));
+
+	//Applying Impulse to the bodies
+	p1->body->ApplyImpulse(impulse, contactNormal, r1);
+	p2->body->ApplyImpulse(-impulse, contactNormal, r2);
+}
+
+void Collider::CalculateContactNormals(Polygon* p1, Polygon* p2) {
 	Mat3 scaled1, scaled2;//TST outcomes
 
 	Vec3 M1, M2;//Points that form the closest line
@@ -65,10 +95,12 @@ void Collider::HandleCollision(Polygon* p1, Polygon* p2) {
 
 	//Pushing Matricies into polygons
 	for (auto v : p1->verticies) {
-		shape1->verticies.push_back(scaled1 * v);
+		Vec3 result = scaled1 * (Vec3(v.x, v.y, 1));
+		shape1->verticies.push_back(Vec3(result.x, result.y, 0));
 	}
 	for (auto v : p2->verticies) {
-		shape2->verticies.push_back(scaled2 * v);
+		Vec3 result = scaled2 * (Vec3(v.x, v.y, 1));
+		shape2->verticies.push_back(Vec3(result.x, result.y, 0));
 	}
 
 	//Clearing all vertices from support functions before
@@ -143,8 +175,6 @@ void Collider::HandleCollision(Polygon* p1, Polygon* p2) {
 	//Finding Lambda 2 using 1 - lambda1
 	float lambda2 = 1 - lambda1;
 
-	Vec3 AClosest, BClosest;
-
 	auto itA = originalpoints.find(VMath::mag(A));
 	auto itB = originalpoints.find(VMath::mag(B));
 
@@ -157,22 +187,26 @@ void Collider::HandleCollision(Polygon* p1, Polygon* p2) {
 	}
 
 	//Finding Contact Normal
-	Vec3 contactNormal = (BClosest - AClosest) / VMath::mag(BClosest - AClosest);
+	contactNormal = (BClosest - AClosest) / VMath::mag(BClosest - AClosest);
 
 	std::cout << "Contact Normal : ";
 	contactNormal.print();
 
 	//Finding the Contact Points on Original Shape using inverse of TST * Closest Point
-	Vec3 AClosestOriginal = Mat3::Inverse(scaled1) * AClosest;
-	Vec3 BClosestOriginal = Mat3::Inverse(scaled2) * BClosest;
+	AClosest = Mat3::Inverse(scaled1) * AClosest;
+	BClosest = Mat3::Inverse(scaled2) * BClosest;
 
 	std::cout << "Closest point on A : ";
-	AClosestOriginal.print();
+	AClosest.print();
 
 	std::cout << "Closest point on B : ";
-	BClosestOriginal.print();
+	BClosest.print();
 
 	std::cout << std::endl;
+
+	contactNormal = Vec3(0.707f, 0.707f, 0);
+	AClosest = Vec3(1.694f, 2.3f, 1);
+	BClosest = Vec3(1.5f, 2, 1);
 }
 
 //Get a point on the simplex
@@ -182,7 +216,7 @@ Vec3 Collider::Support(Polygon* p1, Polygon* p2, const Vec3& direction) {
 	Vec3 point2 = p2->GetSmallestPoint(direction);
 
 	//Minkowski Sum
-	Vec3 sum = Vec3(point1 - point2);
+	Vec3 sum = point1 - point2;
 
 	//emplacing into map for future use
 	originalpoints.emplace(VMath::mag(sum), std::make_pair(point1, point2));
@@ -196,8 +230,7 @@ Mat3 Collider::TST(Polygon* p, const float scaleFactor) {
 	Mat3 translate(Mat3::Translate(p->GetCenter().x, p->GetCenter().y, 1));
 	Mat3 scale(Mat3::Scale(scaleFactor, scaleFactor, 1));
 	Mat3 origin(Mat3::Translate(-p->GetCenter().x, -p->GetCenter().y, 1));
-
-	return Mat3(translate * scale * origin);
+	return translate * scale * origin;
 }
 
 //------------------------------------------------------------- Simplex ---------------------------------------------------------------//

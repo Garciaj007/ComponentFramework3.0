@@ -6,15 +6,17 @@ using namespace GAME;
 using namespace MATH;
 
 //Create Primitive
-Primitive::Primitive(GLenum drawMode_, std::vector<Vec3> &vertices_, std::vector<Vec3> &normals_, std::vector<Vec2> & uvs_)
+Primitive::Primitive(GLenum drawMode_, std::vector<Vec3> &vertices_, std::vector<Vec3> &normals_, std::vector<Vec2> & uvs_, Body *b)
 {
+	body = b;
 	verticies = vertices_;
 	meshes.push_back(new Mesh(drawMode_, vertices_, normals_, uvs_));
 	OnCreate();
 }
 
 //Create Primitive from file path...
-Primitive::Primitive(std::string filepath_) {
+Primitive::Primitive(std::string filepath_, Body* b) {
+	body = b;
 	ObjLoader obj(filepath_.c_str());
 	verticies = obj.vertices;
 	meshes.push_back(new Mesh(GL_LINE_LOOP, obj.vertices, obj.normals, obj.uvCoords));
@@ -61,7 +63,10 @@ void Primitive::Update(const float deltaTime) {
 	//Set the meshes position to current Pos
 	//Sets position to body's position
 	body->Update(deltaTime);
-	modelMatrix = MMath::translate(body->pos.x, body->pos.y, body->pos.z);
+	body->Print();
+	Matrix4 translate = MMath::translate(body->pos.x, body->pos.y, body->pos.z);
+	Matrix4 rotate = MMath::rotate(body->angle, 0.0f, 0.0f, 1.0f);
+	modelMatrix = rotate * translate;
 }
 
 void Primitive::Render(const Matrix4& projectionMatrix, const Matrix4& viewMatrix, const Matrix3& normalMatrix) const {

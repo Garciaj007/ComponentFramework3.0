@@ -15,18 +15,18 @@ Vec3 Polygon::GetCenter() {
 
 Vec3 Polygon::GetBiggestPoint(const Vec3& direction) {
 	Vec3 point = verticies[0];
-	for (auto v : verticies) {
-		if (VMath::dot(v, direction) > VMath::dot(point, direction))
-			point = v;
+	for (int i = 1; i < verticies.size(); i++) {
+		if (VMath::dot(verticies[i], direction) > VMath::dot(point, direction))
+			point = verticies[i];
 	}
 	return point;
 }
 
 Vec3 Polygon::GetSmallestPoint(const Vec3& direction) {
 	Vec3 point = verticies[0];
-	for (auto v : verticies) {
-		if (VMath::dot(v, direction) < VMath::dot(point, direction))
-			point = v;
+	for (int i = 1; i < verticies.size(); i++){
+		if (VMath::dot(verticies[i], direction) < VMath::dot(point, direction))
+			point = verticies[i];
 	}
 	return point;
 }

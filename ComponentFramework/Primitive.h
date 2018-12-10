@@ -12,8 +12,8 @@ namespace GAME {
 	class Primitive: public Model, public Polygon{
 	public:
 		//Constructor
-		Primitive(GLenum drawMode_, std::vector<Vec3> &vertices_, std::vector<Vec3> &normals_, std::vector<Vec2> &uvs);
-		Primitive(std::string filepath_);
+		Primitive(GLenum drawMode_, std::vector<Vec3> &vertices_, std::vector<Vec3> &normals_, std::vector<Vec2> &uvs, Body* b);
+		Primitive(std::string filepath_, Body* b);
 		virtual ~Primitive();
 
 		//Copy & Move Constructor Prevention 

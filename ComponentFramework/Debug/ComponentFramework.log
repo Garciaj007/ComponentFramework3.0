@@ -1,6 +1,2 @@
-﻿  Body.cpp
-  Model0.cpp
-  Primitive.cpp
-  Scene0.cpp
-  Generating Code...
+﻿  Collider.cpp
   ComponentFramework.vcxproj -> C:\Development\C++\ComponentFramework3.0\Debug\ComponentFramework.exe
