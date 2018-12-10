@@ -20,6 +20,7 @@ private:
 public:
 	static float Epsilon;
 
+	static void Print();
 	static bool Collided(Primitive* p1, Primitive* p2);
 	static void HandleCollision(Primitive* p1, Primitive* p2);
 	Vec3 static Support(Polygon* p1, Polygon* p2, const Vec3& direction);

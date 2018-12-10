@@ -1,5 +1,6 @@
 #include "Body.h"
 #include <iostream>
+#include <iomanip>
 
 /* Constructors */
 
@@ -105,6 +106,5 @@ void Body::ApplyTorque(float torque) {
 void Body::Print() {
 	pos.print();
 	vel.print();
-	accel.print();
-	std::cout << angularVel << std::endl;
+	std::cout << std::fixed << angularVel << std::endl;
 }

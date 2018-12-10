@@ -30,7 +30,6 @@ Primitive::~Primitive()
 }
 
 bool Primitive::OnCreate() {
-	body = new Body(1, -GetCenter());
 	//New Shader Program
 	shader = new Shader("baseVert.glsl", "baseFrag.glsl", 3, 0, "vVertex", 1, "vNormal", 2, "texCoords");
 	//Get Shader program IDs 
@@ -63,7 +62,7 @@ void Primitive::Update(const float deltaTime) {
 	//Set the meshes position to current Pos
 	//Sets position to body's position
 	body->Update(deltaTime);
-	body->Print();
+	//body->Print();
 	Matrix4 translate = MMath::translate(body->pos.x, body->pos.y, body->pos.z);
 	Matrix4 rotate = MMath::rotate(body->angle, 0.0f, 0.0f, 1.0f);
 	modelMatrix = rotate * translate;

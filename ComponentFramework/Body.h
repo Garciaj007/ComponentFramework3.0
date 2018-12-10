@@ -7,10 +7,10 @@ using namespace MATH;
 class Body {
 	//Members
 private:
-	float radius, angularVel, angularAccel;
+	float radius = 0, angularVel = 0, angularAccel = 0;
 	Vec3 accel, worldForce, forceApplied;
 public: 
-	mutable float mass, rotationalInertia, angle;
+	mutable float mass = 0, rotationalInertia = 0, angle = 0;
 	mutable Vec3 pos, vel; ///Can only be retrived but not changed unless const funtion is used
 	bool gravity;
 

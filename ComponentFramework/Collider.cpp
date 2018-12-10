@@ -44,11 +44,9 @@ bool Collider::Collided(Primitive* p1, Primitive* p2) {
 
 	//Check if the simplex contains the origin
 	if (simplex.ContainsOrigin(p1, p2)) {
-		std::cout << "Polygons have collided..." << std::endl;
 		return true;
 	}
 	else {
-		std::cout << "Polygons have NOT collided..." << std::endl;
 		return false;
 	}
 }
@@ -70,7 +68,7 @@ void Collider::CalculateImpulse(Primitive* p1, Primitive* p2) {
 	Vec3 r2 = BClosest - p2->GetCenter();
 
 	//Calculating Impulse
-	float impulse = (-(VMath::dot(contactNormal, p1->body->vel - p2->body->vel)) * (Epsilon + 1)) / 
+	float impulse = -(VMath::dot(contactNormal, p1->body->vel - p2->body->vel) * (Epsilon + 1)) / 
 		((1 / p1->body->mass) + (1 / p2->body->mass) + 
 			VMath::dot(contactNormal, VMath::cross(VMath::cross(r1, contactNormal) / p1->body->rotationalInertia, r1)) + 
 			VMath::dot(contactNormal, VMath::cross(VMath::cross(r2, contactNormal) / p2->body->rotationalInertia, r2)));
@@ -189,21 +187,11 @@ void Collider::CalculateContactNormals(Polygon* p1, Polygon* p2) {
 	//Finding Contact Normal
 	contactNormal = (BClosest - AClosest) / VMath::mag(BClosest - AClosest);
 
-	std::cout << "Contact Normal : ";
-	contactNormal.print();
-
 	//Finding the Contact Points on Original Shape using inverse of TST * Closest Point
 	AClosest = Mat3::Inverse(scaled1) * AClosest;
 	BClosest = Mat3::Inverse(scaled2) * BClosest;
 
-	std::cout << "Closest point on A : ";
-	AClosest.print();
-
-	std::cout << "Closest point on B : ";
-	BClosest.print();
-
-	std::cout << std::endl;
-
+	//REMOVE ONCE CONTACT NORMALS THIS FUNCTION IS FIXED
 	contactNormal = Vec3(0.707f, 0.707f, 0);
 	AClosest = Vec3(1.694f, 2.3f, 1);
 	BClosest = Vec3(1.5f, 2, 1);
@@ -231,6 +219,19 @@ Mat3 Collider::TST(Polygon* p, const float scaleFactor) {
 	Mat3 scale(Mat3::Scale(scaleFactor, scaleFactor, 1));
 	Mat3 origin(Mat3::Translate(-p->GetCenter().x, -p->GetCenter().y, 1));
 	return translate * scale * origin;
+}
+
+void Collider::Print() {
+	std::cout << "Contact Normal : ";
+	contactNormal.print();
+
+	std::cout << "Closest point on A : ";
+	AClosest.print();
+
+	std::cout << "Closest point on B : ";
+	BClosest.print();
+
+	std::cout << std::endl;
 }
 
 //------------------------------------------------------------- Simplex ---------------------------------------------------------------//
@@ -275,6 +276,8 @@ bool Simplex::ContainsOrigin(Polygon* p1, Polygon* p2) {
 	//return true if the above does not apply
 	return true;
 }
+
+
 
 
 

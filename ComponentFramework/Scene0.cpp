@@ -30,12 +30,10 @@ bool Scene0::OnCreate() {
 	/// Load Assets: as needed 
 	color1 = Vec4(0.0f, 1.0f, 1.0f, 1.0f);
 	color2 = Vec4(1.0f, 0.0f, 1.0f, 1.0f);
-	prim1 = new Primitive("triangle1.obj", new Body(2, 4, Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3()));
-	prim2 = new Primitive("triangle2.obj", new Body(1, 2, Vec3(-0.0f, 0.0f, 0.0f), Vec3(-1.0f ,0.0f ,0.0f), Vec3()));
+	prim1 = new Primitive("triangle1.obj", new Body(2.0f, 4.0f, Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f)));
+	prim2 = new Primitive("triangle2.obj", new Body(1.0f, 2.0f, Vec3(2.0f, 4.0f, 0.0f), Vec3(-1.0f ,0.0f ,0.0f), Vec3(0.0f, 0.0f, 0.0f)));
 
-	/*prim2->body->ApplyForce(Vec3(1, 1, 0));*/
-	/*prim1->body->SetPosition(Vec3(-2, -2, 0));
-	prim2->body->SetPosition(Vec3(-2, -2, 0));*/
+	Collider::Epsilon = 1.0f;
 	
 	return true;
 }
@@ -72,6 +70,7 @@ void Scene0::Update(const float deltaTime){
 	//Collision Handling
 	if (Collider::Collided(prim1, prim2)) {
 		Collider::HandleCollision(prim1, prim2);
+		Collider::Print();
 	}
 }
 
@@ -83,13 +82,4 @@ void Scene0::Render() const{
 	SDL_GL_SwapWindow(windowPtr->getSDLWindow());
 }
 
-void Scene0::HandleEvents(const SDL_Event& SDLEvent){
-
-	/*if(SDLEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN){
-		trackball->OnLeftMouseDown(SDLEvent.button.x,SDLEvent.button.y);
-	}
-	if (SDLEvent.type == SDL_EventType::SDL_MOUSEMOTION && 
-		SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-		trackball->OnMouseMove(SDLEvent.button.x,SDLEvent.button.y);
-	}*/		
-}
+void Scene0::HandleEvents(const SDL_Event& SDLEvent){ }
