@@ -54,7 +54,7 @@ bool Collider::Collided(Primitive* p1, Primitive* p2) {
 //Handles Collision
 void Collider::HandleCollision(Primitive* p1, Primitive* p2) {
 	
-	if (p1->body == nullptr || p2->body == nullptr) {
+	if (p1->GetBody() == nullptr || p2->GetBody() == nullptr) {
 		return;
 	}
 
@@ -68,14 +68,14 @@ void Collider::CalculateImpulse(Primitive* p1, Primitive* p2) {
 	Vec3 r2 = BClosest - p2->GetCenter();
 
 	//Calculating Impulse
-	float impulse = -(VMath::dot(contactNormal, p1->body->vel - p2->body->vel) * (Epsilon + 1)) / 
-		((1 / p1->body->mass) + (1 / p2->body->mass) + 
-			VMath::dot(contactNormal, VMath::cross(VMath::cross(r1, contactNormal) / p1->body->rotationalInertia, r1)) + 
-			VMath::dot(contactNormal, VMath::cross(VMath::cross(r2, contactNormal) / p2->body->rotationalInertia, r2)));
+	float impulse = -(VMath::dot(contactNormal, p1->GetBody()->GetVel() - p2->GetBody()->GetVel()) * (Epsilon + 1)) / 
+		((1 / p1->GetBody()->GetMass()) + (1 / p2->GetBody()->GetMass()) + 
+			VMath::dot(contactNormal, VMath::cross(VMath::cross(r1, contactNormal) / p1->GetBody()->GetRotationalInertia(), r1)) + 
+			VMath::dot(contactNormal, VMath::cross(VMath::cross(r2, contactNormal) / p2->GetBody()->GetRotationalInertia(), r2)));
 
 	//Applying Impulse to the bodies
-	p1->body->ApplyImpulse(impulse, contactNormal, r1);
-	p2->body->ApplyImpulse(-impulse, contactNormal, r2);
+	p1->GetBody()->ApplyImpulse(impulse, contactNormal, r1);
+	p2->GetBody()->ApplyImpulse(-impulse, contactNormal, r2);
 }
 
 void Collider::CalculateContactNormals(Polygon* p1, Polygon* p2) {

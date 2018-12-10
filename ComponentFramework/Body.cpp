@@ -29,8 +29,52 @@ Body::Body(float mass_, float rotationalInertia_, Vec3 pos_, Vec3 vel_, Vec3 acc
 	accel = accel_;
 }
 
-void Body::SetPosition(const Vec3& pos_) const {
+Vec3 Body::GetPos() const {
+	return pos;
+}
+
+Vec3 Body::GetVel() const {
+	return vel;
+}
+
+Vec3 Body::GetAccel() const {
+	return accel;
+}
+
+Vec3 Body::GetWorldForce() const {
+	return worldForce;
+}
+
+float Body::GetRotationalInertia() const {
+	return rotationalInertia;
+}
+
+float Body::GetMass() const {
+	return mass;
+}
+
+float Body::GetAngle() const {
+	return angle;
+}
+
+float Body::GetAngularVelocity() const {
+	return angularVel;
+}
+
+float Body::GetAngularAccel() const {
+	return angularAccel;
+}
+
+void Body::SetPosition(Vec3 pos_){
 	pos = pos_;
+}
+
+void Body::SetVelocity(Vec3 vel_) {
+	vel = vel_;
+}
+
+void Body::SetAngualarVelocity(float angularVel_) {
+	angularVel = angularVel_;
 }
 
 /* Member Methods */

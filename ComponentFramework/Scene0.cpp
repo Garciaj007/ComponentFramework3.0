@@ -30,8 +30,8 @@ bool Scene0::OnCreate() {
 	/// Load Assets: as needed 
 	color1 = Vec4(0.0f, 1.0f, 1.0f, 1.0f);
 	color2 = Vec4(1.0f, 0.0f, 1.0f, 1.0f);
-	prim1 = new Primitive("triangle1.obj", new Body(2.0f, 4.0f, Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f)));
-	prim2 = new Primitive("triangle2.obj", new Body(1.0f, 2.0f, Vec3(2.0f, 4.0f, 0.0f), Vec3(-1.0f ,0.0f ,0.0f), Vec3(0.0f, 0.0f, 0.0f)));
+	prim1 = new Primitive("triangle1.obj");
+	prim2 = new Primitive("triangle2.obj");
 
 	Collider::Epsilon = 1.0f;
 	

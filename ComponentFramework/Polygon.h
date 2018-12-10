@@ -12,6 +12,10 @@ struct Polygon {
 	virtual Vec3 GetBiggestPoint(const Vec3& direction);
 	virtual Vec3 GetSmallestPoint(const Vec3& direction);
 	virtual Vec3 GetCenter();
+
+	inline void AddPoint(Vec3& point) {
+		verticies.push_back(point);
+	}
 };
 
 #endif // !POLYGON_H

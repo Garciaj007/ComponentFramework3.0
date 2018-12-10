@@ -1,2 +1,24 @@
-﻿  Collider.cpp
+﻿  Body.cpp
+  Collider.cpp
+  Debug.cpp
+  GameSceneManager.cpp
+  Mesh.cpp
+  Model0.cpp
+  Main.cpp
+  MMath.cpp
+  ObjLoader.cpp
+  Polygon.cpp
+c:\development\c++\componentframework3.0\componentframework\polygon.cpp(18): warning C4018: '<': signed/unsigned mismatch
+c:\development\c++\componentframework3.0\componentframework\polygon.cpp(27): warning C4018: '<': signed/unsigned mismatch
+  Primitive.cpp
+c:\development\c++\componentframework3.0\componentframework\primitive.cpp(38): warning C4018: '<': signed/unsigned mismatch
+c:\development\c++\componentframework3.0\componentframework\primitive.cpp(39): warning C4018: '<': signed/unsigned mismatch
+  Scene.cpp
+  Scene0.cpp
+  Shader.cpp
+  Timer.cpp
+  Trackball.cpp
+  VMath.cpp
+  Window.cpp
+  Generating Code...
   ComponentFramework.vcxproj -> C:\Development\C++\ComponentFramework3.0\Debug\ComponentFramework.exe
